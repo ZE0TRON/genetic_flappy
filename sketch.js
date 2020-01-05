@@ -20,26 +20,40 @@ function setup() {
   pipes.push(new Pipe());
   playBestButton = createButton('Play the best bird so far');
   playBestButton.position(5, 405);
-  playBestButton.mousePressed(playBestBird);
+  playBestButton.mousePressed(playBird(bestBird));
   showBirdsButton =  createButton("Show Birds");
   showPipesButton = createButton("Show Pipes");
   showBirdsButton.position(5,430);
   showPipesButton.position(5,450);
   showBirdsButton.mousePressed(()=> {showBirds = !showBirds});
-  
   showPipesButton.mousePressed(()=> {showPipes = !showPipes});
   speedSlider = createSlider(1, 100, 1);
   speedSlider.position(100,480);
   trainButton = createButton("Train");
   trainButton.position(5,480);
   trainButton.mousePressed(()=> {isTraining = !isTraining; train()});
+  saveCurrentBirdButton = createButton("Save the current bird");
+  saveCurrentBirdButton.position(5, 520);
+  saveCurrentBirdButton.mousePressed(() => {
+    saveBird(birds[0]);
+  });
+  saveBestBirdButton = createButton("Save the best bird");
+  saveBestBirdButton.position(140, 520);
+  saveBestBirdButton.mousePressed(() => {
+    saveBird(bestBird);
+  });
+  input = createFileInput(handleFile);
+  input.position(300, 520);
 }
 
 function gameLoop(){
   calculateFitness();
   score+=1;
-  if(score % 70 == 0){
-    pipes.push(new Pipe());
+  if(score % 80 == 0){
+    var newPipe = new Pipe();
+    if(newPipe.x-pipes[pipes.length-1].x > 200){
+      pipes.push(newPipe);
+    }
   }
 
   for(pipe of pipes){
@@ -142,12 +156,47 @@ function restart() {
     highScore = score;
   }
   score = 0;
-  pipes.push(new Pipe()); 
+  pipes.push(new Pipe());
 }
 
-function playBestBird() {
+function playBird(bird){
   for(bird of birds) {
     old_gen.push(bird);
   }
-  birds = [bestBird];
+  birds = [bird];
+}
+
+function handleFile(file){
+  //console.log(file);
+  var bird = JSON.parse(atob(file.data.split(",")[1]));
+  var newBird = new Bird();
+  newBird.replaceBrain(bird.brain);
+  birds = [newBird];
+}
+
+
+
+
+function saveBird(bird){
+  // var data = JSON.stringify(bird);
+  // var filename="bird.json";
+  // var type = "json";
+  //  var file = new Blob([data], { type: type });
+  //  if (window.navigator.msSaveOrOpenBlob)
+  //    // IE10+
+  //    window.navigator.msSaveOrOpenBlob(file, filename);
+  //  else {
+  //    // Others
+  //    var a = document.createElement("a"),
+  //      url = URL.createObjectURL(file);
+  //    a.href = url;
+  //    a.download = filename;
+  //    document.body.appendChild(a);
+  //    a.click();
+  //    setTimeout(function() {
+  //      document.body.removeChild(a);
+  //      window.URL.revokeObjectURL(url);
+  //    }, 0);
+  //  }
+  saveJSON(bird,"bird.json");
 }

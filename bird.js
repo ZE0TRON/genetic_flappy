@@ -16,7 +16,12 @@ function Bird(brain) {
         fill(255);
         ellipse(this.x, this.y, this.radius, this.radius);
     }
-
+    this.replaceBrain = function(brainData) {
+        this.brain.weights_ih.data = brainData.weights_ih.data;
+        this.brain.weights_ho.data = brainData.weights_ho.data;
+        this.brain.bias_h.data = brainData.bias_h.data;
+        this.brain.bias_o.data = brainData.bias_o.data;
+    }
     this.think = function (pipes) {
         let inputs = [];
         inputs[0] = this.y/height;

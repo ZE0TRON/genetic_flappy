@@ -1,8 +1,10 @@
 function Pipe() {
-    this.top = random(height/2);
-    this.bottom = random(height/2);
+    this.top = random(height/10 * 8);
+    this.offset = random(height / 5);
+    this.offset = this.offset> 80 ? this.offset:80+this.offset;
+    this.bottom = height - this.top - this.offset;
     this.x = width;
-    this.w = 20;
+    this.w = 30;
     this.speed =3;
     this.show = function() {
         fill(255);
