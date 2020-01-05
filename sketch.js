@@ -49,12 +49,6 @@ function setup() {
 function gameLoop(){
   calculateFitness();
   score+=1;
-  if(score % 80 == 0){
-    var newPipe = new Pipe();
-    if(newPipe.x-pipes[pipes.length-1].x > 200){
-      pipes.push(newPipe);
-    }
-  }
 
   for(pipe of pipes){
     pipe.update();
@@ -99,7 +93,7 @@ function draw() {
     calculateFitness();
     gameSpeed = speedSlider.value();
     score+=1;
-    if(frameCount % 70 == 0){
+    if(score % 70 == 0){
       pipes.push(new Pipe());
     }
 
@@ -178,25 +172,5 @@ function handleFile(file){
 
 
 function saveBird(bird){
-  // var data = JSON.stringify(bird);
-  // var filename="bird.json";
-  // var type = "json";
-  //  var file = new Blob([data], { type: type });
-  //  if (window.navigator.msSaveOrOpenBlob)
-  //    // IE10+
-  //    window.navigator.msSaveOrOpenBlob(file, filename);
-  //  else {
-  //    // Others
-  //    var a = document.createElement("a"),
-  //      url = URL.createObjectURL(file);
-  //    a.href = url;
-  //    a.download = filename;
-  //    document.body.appendChild(a);
-  //    a.click();
-  //    setTimeout(function() {
-  //      document.body.removeChild(a);
-  //      window.URL.revokeObjectURL(url);
-  //    }, 0);
-  //  }
   saveJSON(bird,"bird.json");
 }
